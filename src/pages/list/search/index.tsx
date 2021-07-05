@@ -2,14 +2,13 @@
 /* eslint-disable react/display-name */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from "react"
-import RouteView from "../../layouts/RouteView"
-import { Redirect } from "react-router-dom"
+import RouteView from "../../../layouts/RouteView"
 
-const ListIndex = (props) => {
+const SearchIndex = (props) => {
   console.log(props.routes)
   return (
     <div>
-      <h2>列表页面</h2>
+      <h2>搜索列表</h2>
       <div>
         <RouteView routes={props.routes} />
       </div>
@@ -17,4 +16,4 @@ const ListIndex = (props) => {
   )
 }
 
-export default ListIndex
+export default SearchIndex

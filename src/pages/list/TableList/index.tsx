@@ -1,6 +1,7 @@
 /* eslint-disable react/display-name */
 import React from "react"
 import { Button, Tooltip, Dropdown, Menu, Input } from "antd"
+import { Link } from "react-router-dom"
 import {
   EllipsisOutlined,
   QuestionCircleOutlined,
@@ -122,7 +123,15 @@ const columns: ProColumns<TableListItem>[] = [
     key: "option",
     valueType: "option",
     render: () => [
-      <a key="link">链路</a>,
+      <Link
+        key="detail"
+        to={{
+          pathname: `/list/table/${1}`,
+          search: "?name=name&age=12&like=3&like=4"
+        }}
+      >
+        详情
+      </Link>,
       <a key="link2">报警</a>,
       <a key="link3">监控</a>,
       <TableDropdown

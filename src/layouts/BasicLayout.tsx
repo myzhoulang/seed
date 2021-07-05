@@ -3,20 +3,39 @@ import React, { useState } from "react"
 import { Switch, Link, withRouter, Route } from "react-router-dom"
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 import type { BasicLayoutProps } from "@ant-design/pro-layout"
-import ProLayout from "@ant-design/pro-layout"
+import ProLayout, {
+  getMenuData,
+  PageContainer,
+  RouteContext,
+  RouteContextType
+} from "@ant-design/pro-layout"
 import RouteView from "./RouteView"
 import { asyncRouterMap } from "../router/router.config"
+
+// eslint-disable-next-line no-debugger
+
+// console.log(data)
 
 const BasciLayout = (props) => {
   const { location, routes } = props
   const [pathname, setPathname] = useState(location.pathname)
   const [collapsed, setCollapsed] = useState(false)
-
+  console.log("pathname", pathname)
+  const { breadcrumb, menuData } = getMenuData(
+    asyncRouterMap,
+    { locale: false },
+    null,
+    (menuData) => {
+      return menuData[0].children
+    }
+  )
   const defaultProps: BasicLayoutProps = {
     location: {
       pathname
     },
-    route: asyncRouterMap[0],
+    menuDataRender() {
+      return menuData
+    },
     collapsed,
     fixSiderbar: true,
     collapsedButtonRender: false,
@@ -39,6 +58,21 @@ const BasciLayout = (props) => {
       <ProLayout
         {...defaultProps}
         onCollapse={setCollapsed}
+        breadcrumbRender={(routers = []) => [
+          {
+            path: "/",
+            breadcrumbName: "首页"
+          },
+          ...routers
+        ]}
+        // itemRender={(route, params, routes, paths) => {
+        //   const first = routes.indexOf(route) === 0
+        //   return first ? (
+        //     <Link to={paths.join("/")}>{route.breadcrumbName}</Link>
+        //   ) : (
+        //     <span>{route.breadcrumbName}</span>
+        //   )
+        // }}
         headerContentRender={() => {
           return (
             <div
@@ -58,7 +92,9 @@ const BasciLayout = (props) => {
             height: "90vh"
           }}
         >
-          <RouteView routes={routes} />
+          <PageContainer>
+            <RouteView routes={routes} />
+          </PageContainer>
         </div>
       </ProLayout>
     </>
