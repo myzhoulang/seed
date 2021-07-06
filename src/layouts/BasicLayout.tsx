@@ -1,27 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react"
-import { Switch, Link, withRouter, Route } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 import type { BasicLayoutProps } from "@ant-design/pro-layout"
-import ProLayout, {
-  getMenuData,
-  PageContainer,
-  RouteContext,
-  RouteContextType
-} from "@ant-design/pro-layout"
+import ProLayout, { getMenuData, PageContainer } from "@ant-design/pro-layout"
 import RouteView from "./RouteView"
 import { asyncRouterMap } from "../router/router.config"
-
-// eslint-disable-next-line no-debugger
-
-// console.log(data)
 
 const BasciLayout = (props) => {
   const { location, routes } = props
   const [pathname, setPathname] = useState(location.pathname)
   const [collapsed, setCollapsed] = useState(false)
-  console.log("pathname", pathname)
-  const { breadcrumb, menuData } = getMenuData(
+  const { menuData } = getMenuData(
     asyncRouterMap,
     { locale: false },
     null,
@@ -29,6 +19,7 @@ const BasciLayout = (props) => {
       return menuData[0].children
     }
   )
+
   const defaultProps: BasicLayoutProps = {
     location: {
       pathname
@@ -65,14 +56,14 @@ const BasciLayout = (props) => {
           },
           ...routers
         ]}
-        // itemRender={(route, params, routes, paths) => {
-        //   const first = routes.indexOf(route) === 0
-        //   return first ? (
-        //     <Link to={paths.join("/")}>{route.breadcrumbName}</Link>
-        //   ) : (
-        //     <span>{route.breadcrumbName}</span>
-        //   )
-        // }}
+        itemRender={(route, params, routes, paths) => {
+          const first = routes.indexOf(route) === 0
+          return first ? (
+            <Link to={paths.join("/")}>{route.breadcrumbName}</Link>
+          ) : (
+            <span>{route.breadcrumbName}</span>
+          )
+        }}
         headerContentRender={() => {
           return (
             <div
@@ -87,11 +78,7 @@ const BasciLayout = (props) => {
           )
         }}
       >
-        <div
-          style={{
-            height: "90vh"
-          }}
-        >
+        <div>
           <PageContainer>
             <RouteView routes={routes} />
           </PageContainer>

@@ -37,6 +37,19 @@ const asyncRouterMap = [
     flatMenu: true,
     routes: [
       {
+        path: "/account",
+        component: UserLayout,
+        redirect: "/accout/login",
+        routes: [
+          {
+            path: "/account/login",
+            component: Login,
+            exact: true,
+            name: "登录"
+          }
+        ]
+      },
+      {
         path: "/",
         component: BasicLayout,
         redirect: "/dashboard/welcome",

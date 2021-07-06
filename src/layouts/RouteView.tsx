@@ -1,41 +1,27 @@
-/* eslint-disable react/prop-types */
 import React from "react"
-import { Route, Switch, withRouter, Redirect } from "react-router-dom"
-import { asyncRouterMap } from "../router/router.config"
+import { Route, Switch, Redirect } from "react-router-dom"
 
-function findRoute(routers, pathname) {
-  if (!Array.isArray(routers)) return null
-  for (const router of routers) {
-    if (router.path === pathname) {
-      return router
-    }
-    if (Array.isArray(router.routes)) {
-      return findRoute(router.routes, pathname)
-    }
-  }
+type RouteViewProps = {
+  routes: Array<any>
 }
-function RouteView(props) {
-  const { routes, location } = props
-  const children = routes
-    ? routes
-    : findRoute(asyncRouterMap, location.pathname)?.routes || []
-  console.log("routes", routes)
+
+function RouteView(props: RouteViewProps) {
+  const { routes } = props
   return (
     <Switch>
-      {children?.map((route, i) => {
-        console.log(route, "=")
+      {routes?.map((route, i) => {
         const { exact } = route
         const props = { exact }
         const Rs = []
         if (route.redirect) {
-          console.log(route.redirect)
           Rs.push(
-            <Redirect from={route.path} exact key={i} to={route.redirect} />
+            <Redirect key={i} from={route.path} exact to={route.redirect} />
           )
         }
+        const { component, ...other } = route
         Rs.push(
           <Route
-            path={route.path}
+            {...other}
             key={i}
             render={(props) => {
               return <route.component {...props} {...route} />
@@ -48,4 +34,4 @@ function RouteView(props) {
     </Switch>
   )
 }
-export default withRouter(RouteView)
+export default RouteView

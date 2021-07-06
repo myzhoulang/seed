@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 import React from "react"
+import RouteView from "../layouts/RouteView"
+import styles from "./index.module.less"
 
-const UserLayout: React.FC = ({ children }) => {
+const UserLayout = (props) => {
   return (
-    <>
-      <h2>User Layout</h2>
-      {children}
-    </>
+    <div className={styles.login}>
+      <h2 className={styles.header}>User Layout</h2>
+      <RouteView routes={props.routes} />
+    </div>
   )
 }
 
