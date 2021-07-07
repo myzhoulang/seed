@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { Link, withRouter } from "react-router-dom"
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 import type { BasicLayoutProps } from "@ant-design/pro-layout"
-import ProLayout, { getMenuData, PageContainer } from "@ant-design/pro-layout"
+import ProLayout, { getMenuData } from "@ant-design/pro-layout"
 import RouteView from "./RouteView"
 import { asyncRouterMap } from "../router/router.config"
 
@@ -16,16 +16,28 @@ const BasciLayout = (props) => {
     { locale: false },
     null,
     (menuData) => {
-      return menuData[0].children
+      return menuData[1].children
     }
   )
+
+  const menus = useMemo(() => {
+    console.log(menuData)
+    // children
+    return menuData.map((item) => {
+      if (!Array.isArray(item.authority) || item.authority.length === 0) {
+        return item
+      }
+    })
+  }, [menuData])
 
   const defaultProps: BasicLayoutProps = {
     location: {
       pathname
     },
     menuDataRender() {
-      return menuData
+      // 对没有权限的菜单进行过滤
+      // console.log("menuData", menuData)
+      return menus
     },
     collapsed,
     fixSiderbar: true,
@@ -78,11 +90,7 @@ const BasciLayout = (props) => {
           )
         }}
       >
-        <div>
-          <PageContainer>
-            <RouteView routes={routes} />
-          </PageContainer>
-        </div>
+        <RouteView routes={routes} />
       </ProLayout>
     </>
   )

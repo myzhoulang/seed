@@ -1,15 +1,15 @@
 import React from "react"
 import ReactDOM from "react-dom"
+
 import { Provider } from "mobx-react"
 import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
-import AppState from "./store/app"
+import accountStore from "./store/app"
 
-const appState = new AppState()
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={appState}>
+    <Provider store={accountStore}>
       <App />
     </Provider>
   </React.StrictMode>,

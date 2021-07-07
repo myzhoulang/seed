@@ -1,7 +1,12 @@
 import React from "react"
+import { Card } from "antd"
 
-function Dashboard(props: any): JSX.Element {
-  return <div>Dashboard</div>
+function Dashboard() {
+  return (
+    <Card>
+      <div>Dashboard</div>
+    </Card>
+  )
 }
 
 export default Dashboard

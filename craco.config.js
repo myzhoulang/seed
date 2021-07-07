@@ -4,6 +4,11 @@ const CracoLessPlugin = require("craco-less")
 const CracoAntDesign = require("craco-antd")
 
 module.exports = {
+  webpack: {
+    alias: {
+      "@": path.join(__dirname, "src")
+    }
+  },
   plugins: [
     {
       plugin: CracoLessPlugin,

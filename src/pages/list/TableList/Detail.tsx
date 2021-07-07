@@ -1,39 +1,12 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/display-name */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from "react"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useLocation
-} from "react-router-dom"
+import { useParams, useLocation } from "react-router-dom"
 import { Card } from "antd"
+import { getSearchQuery } from "../../../utils"
+import { IRouteComponentProps } from "../../../layouts/RouteView"
 
-function getSearachParams() {
-  const search = new URLSearchParams(useLocation().search)
-  const searchParams = {}
-  console.log(search.entries())
-  for (const [key, value] of search.entries()) {
-    console.log(key)
-    if (searchParams[key]) {
-      if (Array.isArray(searchParams[key])) {
-        searchParams[key].push(value)
-      } else {
-        searchParams[key] = [searchParams[key], value]
-      }
-    } else {
-      searchParams[key] = value
-    }
-  }
-  return searchParams
-}
-const Detail = (props) => {
-  console.log(props.routes)
-  const search = getSearachParams()
-  console.log(search)
+const Detail = (props: IRouteComponentProps) => {
+  const location = useLocation()
+  const search = getSearchQuery(location.search)
   const { id } = useParams<{ id: string }>()
   return (
     <div>

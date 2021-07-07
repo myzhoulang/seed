@@ -1,7 +1,9 @@
 import React from "react"
 import { message } from "antd"
+import { inject, observer } from "mobx-react"
 import ProForm, { ProFormText, ProFormCaptcha } from "@ant-design/pro-form"
 import { MobileOutlined, MailOutlined } from "@ant-design/icons"
+import type { IRouteComponentProps } from "@/layouts/RouteView"
 
 const waitTime = (time = 100) => {
   return new Promise((resolve) => {
@@ -11,7 +13,8 @@ const waitTime = (time = 100) => {
   })
 }
 
-const Login = () => {
+const Login = (props: IRouteComponentProps) => {
+  const { store, history } = props
   return (
     <div
       style={{
@@ -21,8 +24,11 @@ const Login = () => {
     >
       <ProForm
         onFinish={async () => {
-          await waitTime(2000)
+          // await waitTime(2000)
+          // store.isAuthenticated = true
+          store.changeAuthenticated(true)
           message.success("提交成功")
+          history.replace("/")
         }}
         submitter={{
           searchConfig: {
@@ -105,4 +111,4 @@ const Login = () => {
     </div>
   )
 }
-export default Login
+export default inject("store")(observer(Login))

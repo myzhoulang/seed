@@ -1,27 +1,32 @@
 import { action, configure, observable } from "mobx"
 
-type AuthUser = {
+type ICurrentUser = {
   name: string
-}
-type AppModel = {
-  user: AuthUser
 }
 
 configure({ enforceActions: "always" })
 
-export default class AppState {
+class AccountStore {
   @observable
-  appState: AppModel = {
-    user: { name: "" }
+  currentUser: ICurrentUser = { name: "" }
+
+  @observable
+  isAuthenticated = true
+  // isAuthenticated = false
+
+  @action.bound
+  changeAuthenticated(isAuthenticated: boolean) {
+    this.isAuthenticated = isAuthenticated
   }
 
   @action.bound
-  setUser(user: AuthUser): void {
-    this.appState.user = user
+  setUser(user: ICurrentUser): void {
+    this.currentUser = user
   }
 
   @action.bound
-  getUser(): AuthUser {
-    return this.appState.user
+  getUser(): ICurrentUser {
+    return this.currentUser
   }
 }
+export default new AccountStore()

@@ -1,81 +1,80 @@
 /* eslint-disable react/display-name */
 import React from "react"
 import { Result, Button } from "antd"
+import type { RouteComponentProps } from "react-router-dom"
 import { SmileOutlined } from "@ant-design/icons"
-import Welcome from "../pages/Welcome"
-import Dashboard from "../pages/Dashboard"
-import TableList from "../pages/list/TableList"
-import Detail from "../pages/list/TableList/Detail"
-import ListIndex from "../pages/list"
-import BasicLayout from "../layouts/BasicLayout"
-import SearchIndex from "../pages/list/search"
-import Article from "../pages/list/search/Article"
-import Test from "../pages/Test"
+import SecurityLayout from "@/layouts/SecurityLayout"
+import BasicLayout from "@/layouts/BasicLayout"
+import UserLayout from "@/layouts/UserLayout"
+import RouteView from "@/layouts/RouteView"
 
-import BlankLayout from "../layouts/BlankLayout"
-import UserLayout from "../layouts/UserLayout"
-import Login from "../pages/user/Login"
-import RouteView from "../layouts/RouteView"
-
-// {
-//   path: "/user",
-//   component: "UserLayout",
-//   exact: true,
-//   routes: [
-//     {
-//       path: "/user/login",
-//       component: Login
-//     }
-//   ]
-// },
+export interface IRouteConfigProps {
+  path: string
+  name?: string
+  icon?: React.Component | JSX.Element
+  redirect?: string
+  from?: string
+  exact?: boolean
+  flatMenu?: boolean
+  routes?: Array<IRouteConfigProps>
+  authority?: string | Array<string>
+  component:
+    | string
+    | React.ComponentType<RouteComponentProps<any>>
+    | React.ComponentType<any>
+}
 
 const asyncRouterMap = [
   {
     path: "/",
-    component: RouteView,
-    redirect: "/dashboard/welcome",
+    component: SecurityLayout,
     flatMenu: true,
     routes: [
       {
-        path: "/account",
+        path: "/user",
         component: UserLayout,
-        redirect: "/accout/login",
+        name: "user",
+        redirect: "/user/login",
+        exact: true,
         routes: [
           {
-            path: "/account/login",
-            component: Login,
-            exact: true,
-            name: "登录"
+            path: "/user/login",
+            component: "pages/user/Login",
+            name: "登录",
+            authority: ["1"]
           }
         ]
       },
       {
         path: "/",
         component: BasicLayout,
+        exact: true,
         redirect: "/dashboard/welcome",
         name: "首页",
         routes: [
           {
-            path: "/test",
-            name: "Test",
-            component: Test
+            path: "/noAuth",
+            name: "noAuth",
+            component: "pages/Test",
+            authority: ["4"]
           },
           {
             path: "/dashboard",
             component: RouteView,
             name: "Dashboard",
+            redirect: "/dashboard/welcome",
             routes: [
               {
                 path: "/dashboard/welcome",
                 name: "欢迎",
                 icon: <SmileOutlined />,
-                component: Welcome
+                component: "pages/Welcome"
               },
               {
                 path: "/dashboard/monitor",
                 name: "monitor",
                 icon: <SmileOutlined />,
-                component: Dashboard
+                component: "pages/Dashboard"
               }
             ]
           },
@@ -83,31 +82,31 @@ const asyncRouterMap = [
             path: "/list",
             name: "列表",
             icon: <SmileOutlined />,
-            component: ListIndex,
+            component: "pages/list",
             redirect: "/list/table/",
             routes: [
               {
                 path: "/list/table/",
                 name: "表格列表",
                 exact: true,
-                component: TableList
+                component: "pages/list/TableList"
               },
               {
                 path: "/list/table/:id",
                 name: "详情",
                 exact: true,
                 hideInMenu: true,
-                component: Detail
+                component: "pages/list/TableList/Detail"
               },
               {
                 path: "/list/search",
                 name: "搜索列表",
-                component: SearchIndex,
+                component: "pages/list/search",
                 routes: [
                   {
                     path: "/list/search/article",
                     name: "搜索文章列表",
-                    component: Article
+                    component: "pages/list/search/Article"
                   }
                 ]
               }

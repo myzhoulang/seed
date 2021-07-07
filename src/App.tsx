@@ -5,19 +5,10 @@ import { BrowserRouter as Router } from "react-router-dom"
 import { asyncRouterMap } from "./router/router.config"
 import RouteView from "./layouts/RouteView"
 
-function App(props: any): JSX.Element {
-  const appState = props.store
-  appState.setUser({ name: "111" })
+function App(): JSX.Element {
   return (
-    <Router
-      getUserConfirmation={(message, callback) => {
-        // this is the default behavior
-        const allowTransition = window.confirm(message)
-        callback(allowTransition)
-      }}
-    >
+    <Router>
       <RouteView routes={asyncRouterMap} />
-      {/* <Redirect from="/" exact to="/welcome" /> */}
     </Router>
   )
 }

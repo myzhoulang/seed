@@ -1,35 +1,72 @@
-import React from "react"
+import React, { Suspense } from "react"
+import type { ProviderProps } from "mobx-react"
+import { inject, observer } from "mobx-react"
 import { Route, Switch, Redirect } from "react-router-dom"
+import type { RouteComponentProps } from "react-router-dom"
+import { Spin } from "antd"
+import Authorized from "../components/Authorized/Authorized"
+import type { IRouteConfigProps } from "../router/router.config"
 
-type RouteViewProps = {
-  routes: Array<any>
+export interface IRouteComponentProps extends RouteComponentProps {
+  routes?: Array<IRouteConfigProps>
+  // FIXME: 类型怎么定义
+  store?: ProviderProps
+}
+function render(route, props) {
+  const { component: Component } = route
+  if (typeof Component === "string") {
+    console.log("Component", Component)
+    // FIXME: 扩展
+    const PromiseComponent = React.lazy(
+      () => import(`@/${Component}`)
+      // .then((component) => {
+      //   return new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       resolve(component)
+      //     }, 1000000)
+      //   })
+      // })
+    )
+    return (
+      <Suspense fallback={<Spin tip="Loading..." />}>
+        <PromiseComponent {...props} {...route} />
+      </Suspense>
+    )
+  }
+  console.log("path", route.path)
+  return <Component {...props} {...route} />
 }
 
-function RouteView(props: RouteViewProps) {
+function RouteView(props: Pick<IRouteComponentProps, "routes">) {
   const { routes } = props
   return (
     <Switch>
       {routes?.map((route, i) => {
-        const { exact } = route
-        const props = { exact }
-        const Rs = []
-        if (route.redirect) {
-          Rs.push(
-            <Redirect key={i} from={route.path} exact to={route.redirect} />
-          )
-        }
-        const { component, ...other } = route
-        Rs.push(
+        console.log("route", route)
+        const { path } = route
+        const child = []
+
+        child.push(
           <Route
-            {...other}
-            key={i}
+            path={path}
+            key={i + 1}
             render={(props) => {
-              return <route.component {...props} {...route} />
+              return (
+                <Authorized
+                  currentAuthority={["1", "2", "3"]}
+                  authority={route.authority}
+                >
+                  {render(route, props)}
+                </Authorized>
+              )
             }}
-            {...props}
           />
         )
-        return Rs
+
+        if (route.redirect) {
+          child.push(<Redirect from={path} key={i} to={route.redirect} />)
+        }
+        return child
       })}
     </Switch>
   )

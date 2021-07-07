@@ -4,5 +4,16 @@
     "configFile": ".eslintrc.js"
   },
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.fontFamily": "MonoLisa",
+  "editor.fontSize": 20,
+  "editor.fontLigatures": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontWeight": "500",
+  "workbench.fontAliasing": "antialiased",
+  "js/ts.implicitProjectConfig.checkJs": true,
+  "alias-skip.mappings": {
+    "@": "/src"
+  },
+  "alias-skip.allowedsuffix": ["js", "vue", "jsx", "ts", "tsx"],
+  "alias-skip.rootpath": "package.json"
 }
