@@ -11,8 +11,8 @@ class AccountStore {
   currentUser: ICurrentUser = { name: "" }
 
   @observable
-  isAuthenticated = true
-  // isAuthenticated = false
+  // isAuthenticated = true
+  isAuthenticated = false
 
   @action.bound
   changeAuthenticated(isAuthenticated: boolean) {

@@ -45,7 +45,9 @@ function RouteView(props: Pick<IRouteComponentProps, "routes">) {
         console.log("route", route)
         const { path } = route
         const child = []
-
+        if (route.redirect) {
+          child.push(<Redirect exact from={path} key={i} to={route.redirect} />)
+        }
         child.push(
           <Route
             path={path}
@@ -63,9 +65,6 @@ function RouteView(props: Pick<IRouteComponentProps, "routes">) {
           />
         )
 
-        if (route.redirect) {
-          child.push(<Redirect from={path} key={i} to={route.redirect} />)
-        }
         return child
       })}
     </Switch>

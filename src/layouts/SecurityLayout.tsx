@@ -72,12 +72,7 @@ import type { IRouteComponentProps } from "@/layouts/RouteView"
 const SecurityLayout: React.FC<IRouteComponentProps> = (props) => {
   const { store, routes } = props
   if (store.isAuthenticated) {
-    return (
-      <>
-        <RouteView routes={[routes[1]]} />
-        <Redirect to={`/dashboard/welcome`} />
-      </>
-    )
+    return <RouteView routes={[routes[1]]} />
   } else {
     return (
       <>
